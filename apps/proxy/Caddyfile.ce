@@ -17,6 +17,13 @@
 
 	reverse_proxy /static/* api:8000
 
+	# Setjoo Identity OIDC callback — fixed by Setjoo's own IdP contract to
+	# "{origin}/oauth/callback" (no per-app override, no trailing slash),
+	# so it can't live under /auth/* like every other provider's callback.
+	# Without this, the path falls through to the web:3000 catch-all below
+	# and silently 200s with the SPA shell instead of reaching Django.
+	reverse_proxy /oauth/callback api:8000
+
 	reverse_proxy /{$BUCKET_NAME}/* plane-minio:9000
 	reverse_proxy /{$BUCKET_NAME} plane-minio:9000
 
