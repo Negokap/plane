@@ -4,20 +4,19 @@
  * See the LICENSE file for details.
  */
 
-export const SITE_NAME = "Plane | Simple, extensible, open-source project management tool.";
-export const SITE_TITLE = "Plane | Simple, extensible, open-source project management tool.";
-export const SITE_DESCRIPTION =
-  "Open-source project management tool to manage work items, cycles, and product roadmaps easily";
+export const SITE_NAME = "Setjoo Projects | Tasks, teams, milestones, and workload.";
+export const SITE_TITLE = "Setjoo Projects | Tasks, teams, milestones, and workload.";
+export const SITE_DESCRIPTION = "Setjoo Projects is the work-management layer of the Setjoo ecosystem.";
 export const SITE_KEYWORDS =
-  "software development, plan, ship, software, accelerate, code management, release management, project management, work items tracking, agile, scrum, kanban, collaboration";
-export const SITE_URL = "https://app.plane.so/";
-export const TWITTER_USER_NAME = "Plane | Simple, extensible, open-source project management tool.";
+  "setjoo, project management, work items tracking, agile, scrum, kanban, collaboration, tasks, teams, milestones";
+export const SITE_URL = "https://projects.setjoo.com/";
+export const TWITTER_USER_NAME = "Setjoo Projects";
 
-// Plane Sites Metadata
-export const SPACE_SITE_NAME = "Plane Publish | Make your Plane boards and roadmaps pubic with just one-click. ";
-export const SPACE_SITE_TITLE = "Plane Publish | Make your Plane boards public with one-click";
-export const SPACE_SITE_DESCRIPTION = "Plane Publish is a customer feedback management tool built on top of plane.so";
+// Setjoo Sites Metadata
+export const SPACE_SITE_NAME = "Setjoo Projects Publish | Share Setjoo Projects boards and roadmaps with one click.";
+export const SPACE_SITE_TITLE = "Setjoo Projects Publish | Share boards publicly with one click";
+export const SPACE_SITE_DESCRIPTION = "Setjoo Projects Publish shares boards and roadmaps built on Setjoo Projects.";
 export const SPACE_SITE_KEYWORDS =
-  "software development, customer feedback, software, accelerate, code management, release management, project management, work items tracking, agile, scrum, kanban, collaboration";
-export const SPACE_SITE_URL = "https://app.plane.so/";
-export const SPACE_TWITTER_USER_NAME = "planepowers";
+  "setjoo, customer feedback, project management, work items tracking, agile, scrum, kanban, collaboration";
+export const SPACE_SITE_URL = "https://projects.setjoo.com/";
+export const SPACE_TWITTER_USER_NAME = "Setjoo Projects";
