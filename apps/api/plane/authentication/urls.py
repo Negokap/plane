@@ -18,6 +18,7 @@ from .views import (
     GitHubOauthInitiateEndpoint,
     GoogleCallbackEndpoint,
     GoogleOauthInitiateEndpoint,
+    SetjooOauthInitiateEndpoint,
     MagicGenerateEndpoint,
     MagicSignInEndpoint,
     MagicSignUpEndpoint,
@@ -102,6 +103,10 @@ urlpatterns = [
         GitHubCallbackSpaceEndpoint.as_view(),
         name="space-github-callback",
     ),
+    ## Setjoo Identity (OIDC) — callback lives at the project root in
+    ## plane/urls.py, not here: Setjoo Identity's own redirect_uri contract
+    ## is fixed to "{origin}/oauth/callback" with no per-app override.
+    path("setjoo/", SetjooOauthInitiateEndpoint.as_view(), name="setjoo-initiate"),
     ## Gitlab Oauth
     path("gitlab/", GitLabOauthInitiateEndpoint.as_view(), name="gitlab-initiate"),
     path("gitlab/callback/", GitLabCallbackEndpoint.as_view(), name="gitlab-callback"),

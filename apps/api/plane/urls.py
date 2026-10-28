@@ -13,6 +13,8 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from plane.authentication.views import SetjooCallbackEndpoint
+
 handler404 = "plane.app.views.error_404.custom_404_view"
 
 urlpatterns = [
@@ -21,6 +23,12 @@ urlpatterns = [
     path("api/instances/", include("plane.license.urls")),
     path("api/v1/", include("plane.api.urls")),
     path("auth/", include("plane.authentication.urls")),
+    # Setjoo Identity's OIDC redirect_uri contract is fixed to
+    # "{origin}/oauth/callback" (no per-app override, no trailing slash) —
+    # must be a top-level route, not nested under /auth/ like every other
+    # provider's callback. Placed before the plane.web.urls catch-all so it
+    # takes precedence.
+    path("oauth/callback", SetjooCallbackEndpoint.as_view(), name="setjoo-callback"),
     path("", include("plane.web.urls")),
 ]
 
