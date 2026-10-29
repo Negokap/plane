@@ -6,6 +6,14 @@ set -euo pipefail
 TAG="${TAG:-$CODEBUILD_RESOLVED_SOURCE_VERSION}"
 HOST="${PUBLIC_URL#https://}"
 
+# Docker Hub rate-limits CodeBuild's shared IPs (429 on 2026-10-29). Pull the official base images from
+# AWS's mirror of them and tag them with their Docker Hub names, so `docker build` finds them locally.
+# Read from the Dockerfiles, so upstream version bumps are picked up.
+grep -hoE '^FROM [^ ]+' apps/web/Dockerfile.web apps/admin/Dockerfile.admin apps/space/Dockerfile.space apps/live/Dockerfile.live apps/api/Dockerfile.api apps/proxy/Dockerfile.ce \
+  | awk '{print $2}' | grep ':' | sort -u | while read -r img; do
+    docker pull -q "public.ecr.aws/docker/library/$img" && docker tag "public.ecr.aws/docker/library/$img" "$img"
+  done
+
 vite_args=()
 for v in API WEB ADMIN SPACE LIVE; do vite_args+=(--build-arg "VITE_${v}_BASE_URL=$PUBLIC_URL"); done
 
