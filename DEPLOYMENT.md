@@ -54,6 +54,11 @@ If you ever diff this against a fresh `git clone` of upstream
 `makeplane/plane`, these are the intentional differences — don't
 "fix" them back to stock.
 
+> **Pipeline (2026-10-29):** deploys now go through AWS CodeBuild → ECR → `/opt/setjoo-projects` on
+> this box, with every env var in one Infisical project (`plane/prod`) synced to a single `.env`.
+> See [deploy/README.md](./deploy/README.md). The three files below are the pre-pipeline layout;
+> their keys are what goes into Infisical (minus `PORT`, which compose sets for `live`).
+
 ## Required environment files (keys only — see the live `.env` files on
 `sj-app-prod-01` for actual values, never commit those)
 
@@ -95,6 +100,8 @@ manager integration for this deployment yet; if that changes, update this
 section.
 
 ## Standing up a fresh checkout
+
+Pre-pipeline manual method, kept for reference. Normal deploys: merge to `setjoo-oidc` (deploy/README.md).
 
 1. `git clone` this repo, checkout `setjoo-oidc`.
 2. Create the three `.env` files above with real values (ask whoever has

@@ -1,5 +1,10 @@
+# Project name pinned so containers and volumes (plane_uploads etc.) stay the same
+# whichever directory this file is run from (/opt/plane by hand, /opt/setjoo-projects by the pipeline).
+name: plane
+
 services:
   web:
+    image: ${PLANE_IMAGE:-plane}:web-${PLANE_TAG:-local}
     container_name: web
     build:
       context: .
@@ -11,6 +16,7 @@ services:
       - api
 
   admin:
+    image: ${PLANE_IMAGE:-plane}:admin-${PLANE_TAG:-local}
     container_name: admin
     build:
       context: .
@@ -23,6 +29,7 @@ services:
       - web
 
   space:
+    image: ${PLANE_IMAGE:-plane}:space-${PLANE_TAG:-local}
     container_name: space
     build:
       context: .
@@ -35,6 +42,7 @@ services:
       - web
 
   api:
+    image: ${PLANE_IMAGE:-plane}:api-${PLANE_TAG:-local}
     container_name: api
     build:
       context: ./apps/api
@@ -44,11 +52,12 @@ services:
     restart: always
     command: ./bin/docker-entrypoint-api.sh
     env_file:
-      - ./apps/api/.env
+      - .env
     depends_on:
       - plane-redis
 
   worker:
+    image: ${PLANE_IMAGE:-plane}:api-${PLANE_TAG:-local}
     container_name: bgworker
     build:
       context: ./apps/api
@@ -58,12 +67,13 @@ services:
     restart: always
     command: ./bin/docker-entrypoint-worker.sh
     env_file:
-      - ./apps/api/.env
+      - .env
     depends_on:
       - api
       - plane-redis
 
   beat-worker:
+    image: ${PLANE_IMAGE:-plane}:api-${PLANE_TAG:-local}
     container_name: beatworker
     build:
       context: ./apps/api
@@ -73,12 +83,13 @@ services:
     restart: always
     command: ./bin/docker-entrypoint-beat.sh
     env_file:
-      - ./apps/api/.env
+      - .env
     depends_on:
       - api
       - plane-redis
 
   migrator:
+    image: ${PLANE_IMAGE:-plane}:api-${PLANE_TAG:-local}
     container_name: plane-migrator
     build:
       context: ./apps/api
@@ -88,11 +99,12 @@ services:
     restart: no
     command: ./bin/docker-entrypoint-migrator.sh
     env_file:
-      - ./apps/api/.env
+      - .env
     depends_on:
       - plane-redis
 
   live:
+    image: ${PLANE_IMAGE:-plane}:live-${PLANE_TAG:-local}
     container_name: plane-live
     build:
       context: .
@@ -101,7 +113,10 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     env_file:
-      - ./apps/live/.env
+      - .env
+    environment:
+      # api reads PORT too (gunicorn, default 8000), so live's port can't live in the shared .env
+      PORT: "3000"
 
   plane-redis:
     container_name: plane-redis
@@ -136,6 +151,7 @@ services:
 
   # Comment this if you already have a reverse proxy running
   proxy:
+    image: ${PLANE_IMAGE:-plane}:proxy-${PLANE_TAG:-local}
     container_name: proxy
     build:
       context: ./apps/proxy

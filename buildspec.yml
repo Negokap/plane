@@ -1,0 +1,43 @@
+# AWS CodeBuild: builds the Setjoo Projects (Plane fork) images, pushes them to
+# ECR, then deploys to sj-app-prod-01 (hst-2) over SSH. Same shape as the
+# Kobnoo/Fwaye/MPP pipelines; see deploy/README.md for the one-time setup and
+# how developers ship.
+#
+# Needs: CodeBuild project "plane-build" (PRIVILEGED, x86_64, BUILD_GENERAL1_LARGE:
+# the web/space builds run out of memory on MEDIUM), ECR repo "plane", and the
+# SSM SecureString /plane/deploy-ssh-key (private key of deploy@hst-2).
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: "us-east-1"
+    ECR_REGISTRY: "535391556744.dkr.ecr.us-east-1.amazonaws.com"
+    ECR_REPO: "535391556744.dkr.ecr.us-east-1.amazonaws.com/plane"
+    DEPLOY_HOST: "45.90.108.153"
+    DEPLOY_USER: "deploy"
+    DEPLOY_DIR: "/opt/setjoo-projects"
+    # Baked into the browser bundles at build time. Public values, not secrets.
+    PUBLIC_URL: "https://projects.setjoo.com"
+  parameter-store:
+    DEPLOY_SSH_KEY: /plane/deploy-ssh-key
+
+phases:
+  pre_build:
+    commands:
+      - echo "Commit $CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+  build:
+    commands:
+      - bash deploy/build.sh
+  post_build:
+    commands:
+      - if [ "$CODEBUILD_BUILD_SUCCEEDING" != "1" ]; then echo "Build failed, not deploying"; exit 1; fi
+      - mkdir -p ~/.ssh && printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+      - ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+      - TAG="$CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - SSH="ssh -i $HOME/.ssh/deploy $DEPLOY_USER@$DEPLOY_HOST"
+      - scp -i ~/.ssh/deploy docker-compose.yml deploy/deploy.sh deploy/sync-env.sh "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/"
+      # Short-lived ECR token over stdin, so the box needs no AWS credentials and the token never shows in a command line.
+      - aws ecr get-login-password --region "$AWS_REGION" | $SSH "sudo -n docker --config $DEPLOY_DIR/.docker login --username AWS --password-stdin $ECR_REGISTRY"
+      - $SSH "sudo -n env PLANE_IMAGE=$ECR_REPO PLANE_TAG=$TAG bash $DEPLOY_DIR/deploy.sh"
+      - echo "Deployed $TAG"
