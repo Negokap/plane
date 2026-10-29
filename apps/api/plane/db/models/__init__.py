@@ -88,5 +88,6 @@ from .label import Label
 from .device import Device, DeviceSession
 
 from .sticky import Sticky
+from .chat import ChatMessage
 
 from .description import Description, DescriptionVersion
