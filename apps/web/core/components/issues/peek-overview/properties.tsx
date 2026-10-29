@@ -36,6 +36,7 @@ import { useMember } from "@/hooks/store/use-member";
 import { useProject } from "@/hooks/store/use-project";
 import { useProjectState } from "@/hooks/store/use-project-state";
 // plane web components
+import { IssueCustomFields } from "@/components/custom-fields/issue-custom-fields";
 import { IssueParentSelectRoot } from "@/components/issues/parent-select-root";
 import type { TIssueOperations } from "../issue-detail";
 import { IssueCycleSelect } from "../issue-detail/cycle-select";
@@ -244,6 +245,7 @@ export const PeekOverviewProperties = observer(function PeekOverviewProperties(p
           <IssueLabel workspaceSlug={workspaceSlug} projectId={projectId} issueId={issueId} disabled={disabled} />
         </SidebarPropertyListItem>
       </div>
+      <IssueCustomFields workspaceSlug={workspaceSlug} projectId={projectId} issueId={issueId} disabled={disabled} />
     </div>
   );
 });
