@@ -1,3 +1,22 @@
+> ## This is Setjoo Projects
+>
+> This repository is [Setjoo](https://setjoo.com)'s fork of
+> [makeplane/plane](https://github.com/makeplane/plane) (AGPL v3.0),
+> deployed and whitelabeled as **Setjoo Projects** — the work-management
+> layer of the Setjoo ecosystem, live at
+> [projects.setjoo.com](https://projects.setjoo.com).
+>
+> - **[WHITELABEL.md](./WHITELABEL.md)** — every branding change made on
+>   top of upstream Plane, and what was deliberately left alone (and why).
+> - **[SETJOO_INTEGRATION.md](./SETJOO_INTEGRATION.md)** — the Setjoo
+>   Identity OIDC integration: why a first-party provider was built
+>   instead of a community patch, how it works, and real bugs found and
+>   fixed while standing this up.
+>
+> Everything below this point is upstream Plane's own README, kept for
+> attribution and context per the AGPL license this project is under.
+> Development happens on the `setjoo-oidc` branch, not `main`/`preview`.
+
 <br /><br />
 
 <p align="center">
