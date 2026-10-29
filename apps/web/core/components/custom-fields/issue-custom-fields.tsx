@@ -70,7 +70,7 @@ function CustomFieldEditor(props: TFieldEditorProps) {
       return (
         <DateDropdown
           value={typeof value === "string" ? value : null}
-          onChange={(val) => onChange(val ? renderFormattedPayloadDate(val) : null)}
+          onChange={(val) => onChange((val && renderFormattedPayloadDate(val)) || null)}
           placeholder="Add date"
           buttonVariant="transparent-with-text"
           disabled={disabled}

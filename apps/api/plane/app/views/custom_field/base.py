@@ -6,7 +6,7 @@
 import datetime
 from urllib.parse import urlparse
 
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -76,7 +76,9 @@ class CustomFieldViewSet(BaseViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-            serializer.save(project_id=project_id)
+            # Savepoint, so a duplicate name doesn't poison the request's transaction.
+            with transaction.atomic():
+                serializer.save(project_id=project_id)
         except IntegrityError:
             return Response({"name": "A field with this name already exists"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -90,7 +92,8 @@ class CustomFieldViewSet(BaseViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-            field = serializer.save()
+            with transaction.atomic():
+                field = serializer.save()
         except IntegrityError:
             return Response({"name": "A field with this name already exists"}, status=status.HTTP_400_BAD_REQUEST)
         if field.field_type == CustomFieldType.DROPDOWN:
