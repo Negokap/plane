@@ -83,22 +83,46 @@ kill a component without hunting down every import):
   logos (Plane's own customer social proof, meaningless for a
   single-tenant Setjoo deployment).
 
+## Second pass (2026-10-29, commit `64ac507`)
+
+User specifically flagged the "Welcome back to Plane." login message
+(missed by the first pass — that only fixed page titles/meta, never the
+actual sign-in screen copy in `apps/web/core/components/account/
+auth-forms/auth-header.tsx`) and asked for as thorough a sweep as
+reasonable beyond that. This pass added: all 106 "Plane" occurrences in
+the **EN i18n locale only** (`packages/i18n/src/locales/en/*.json` — the
+other 17 locales were not touched, not reasonable to hand-translate), 55
+more hardcoded strings across onboarding copy/admin OAuth-provider setup
+forms/error pages/the telemetry consent toggle text found via a broader
+non-quoted-string sweep, and the `docs.plane.so`/`forum.plane.so`/
+`github.com/makeplane` links previously deferred below — those now
+redirect to `support@setjoo.com` (bug reports, contact) or `setjoo.com`
+(docs/forum/changelog, as a safe real fallback since no Setjoo-equivalent
+page exists — not fabricating fake doc URLs). "Star us on GitHub" removed
+entirely rather than redirected.
+
+**New deferral found and NOT touched, on purpose**: Terms of Service /
+Privacy Policy links (`apps/web/core/components/account/
+terms-and-conditions.tsx`, `apps/space/components/account/
+terms-and-conditions.tsx`) still point at Plane Software Inc.'s real legal
+documents. Setjoo has no equivalent pages. Redirecting to a Setjoo URL
+with no actual terms content, or fabricating placeholder legal text,
+would be worse than leaving this alone — needs a real decision + real
+content from Setjoo, not a mechanical find-replace.
+
+Also left alone on purpose: `apps/web/core/components/workspace/billing/
+comparison/plans.tsx` (Plane's own SaaS pricing-comparison page —
+unreachable in a self-hosted deployment with no billing configured,
+renaming would imply Setjoo sells tiers it doesn't); the
+`intake@plane.so` check in `inbox-list-item.tsx` (a functional sentinel
+value, not display text); and the ~20 `// Plane imports`-style code
+comments found across the codebase (zero user-visible impact).
+
 ## Deliberately deferred (not in this pass)
 
 Found by the branding audit but intentionally left as-is — flagging so
 nobody assumes a full rebrand happened:
 
-- **Help/docs/forum/GitHub links** that still point at `docs.plane.so`,
-  `forum.plane.so`, `github.com/makeplane/plane`: command palette help
-  entries (`apps/web/core/components/power-k/config/help-commands.ts`),
-  admin sidebar help menu (`apps/admin/app/(all)/(dashboard)/
-  sidebar-help-section.tsx`), production error-page contact links
-  (`apps/web/app/error/prod.tsx`), "What's new" panel footer
-  (`apps/web/core/components/global/product-updates/footer.tsx`),
-  workspace-invitations empty-state GitHub link. These are
-  "where do I get help" affordances, not self-promotion — redirecting
-  them to real Setjoo support channels is real product work (needs an
-  actual Setjoo docs/support destination to point at), not a quick swap.
 - **`MARKETING_PRICING_PAGE_LINK`/`MARKETING_CONTACT_US_PAGE_LINK`/
   `MARKETING_PLANE_ONE_PAGE_LINK`** (`packages/constants/src/endpoints.ts`)
   — billing/upgrade-page links, not touched.
