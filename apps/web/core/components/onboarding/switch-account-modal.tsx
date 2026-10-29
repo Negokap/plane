@@ -42,7 +42,7 @@ export function SwitchAccountModal(props: Props) {
 
     await signOut()
       .then(() => {
-        setTheme("system");
+        setTheme("light");
         router.push("/");
         handleClose();
       })

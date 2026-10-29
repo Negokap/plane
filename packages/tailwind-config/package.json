@@ -10,6 +10,7 @@
   "main": "tailwind.config.js",
   "exports": {
     "./index.css": "./index.css",
+    "./fonts/*": "./fonts/*",
     "./postcss.config.js": "./postcss.config.js"
   },
   "dependencies": {

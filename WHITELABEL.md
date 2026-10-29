@@ -118,6 +118,35 @@ renaming would imply Setjoo sells tiers it doesn't); the
 value, not display text); and the ~20 `// Plane imports`-style code
 comments found across the codebase (zero user-visible impact).
 
+## Third pass (2026-10-30, Setjoo look + links)
+
+Follows `setjoo/BRAND-AND-LINKS.md`.
+- **Font: Outfit**, self-hosted. `packages/tailwind-config/fonts/` holds the
+  woff2 files (from `@fontsource-variable/outfit` 5.3.0, OFL) and
+  `outfit.css`; web/admin/space `root.tsx` import it instead of Inter, and
+  `--font-heading`/`--font-body` plus the editor's sans font use
+  `"Outfit Variable"`. The `@fontsource-variable/inter` dependency is left in
+  package.json (unused) to avoid a lockfile change.
+- **Light by default** in all three apps (`defaultTheme="light"`, sign-out
+  and account switch reset to light). System and dark stay as options.
+- **Neutrals** (`variables.css`, light and dark) moved from Plane's cool
+  hue 230 to Setjoo's warm hue; light anchors are Core's tokens exactly:
+  canvas `neutral-300` = mist `#F4F2F2`, `neutral-500` = line `#E6E2E2`,
+  `neutral-1000` = ink muted `#6B6566`, `neutral-1200` = ink `#231F20`.
+  `--brand-default` (light and dark) is now exactly `#ED1C24`.
+- **Leftover Plane blue** replaced with Setjoo red where it shows: cycle
+  progress chart, profile sidebar chart, theme picker swatches, custom theme
+  default, PDF export (web + live). Status colours (state/module/cycle
+  groups) stay: they encode meaning, not brand.
+- **Sign in with Setjoo** is the first login button on web (red, from
+  `is_setjoo_enabled`). God-mode lets admins switch off Passwords etc. while
+  Setjoo login is on (it isn't listed as a method there). Keep **Allow
+  sign-ups** on: Setjoo users are created through it.
+- **App launcher** (`apps/web/core/components/navigation/setjoo-launcher.tsx`)
+  in the top bar; data `setjoo-applications.json`, refreshed by
+  `deploy/build.sh` from https://auth.setjoo.com/api/v1/applications.
+- **"Manage Setjoo account"** in the avatar menu → https://auth.setjoo.com/.
+
 ## Deliberately deferred (not in this pass)
 
 Found by the branding audit but intentionally left as-is — flagging so
@@ -126,11 +155,6 @@ nobody assumes a full rebrand happened:
 - **`MARKETING_PRICING_PAGE_LINK`/`MARKETING_CONTACT_US_PAGE_LINK`/
   `MARKETING_PLANE_ONE_PAGE_LINK`** (`packages/constants/src/endpoints.ts`)
   — billing/upgrade-page links, not touched.
-- **Hardcoded `#3f76ff` outside `variables.css`** — PDF export styling,
-  profile sidebar chart/legend color, custom-theme-picker placeholder —
-  cosmetically minor, low visibility.
-- **Font** — Setjoo's own apps use `Outfit`; Plane's apps still ship
-  `Inter`/`IBM Plex Mono`/Material Symbols. Not swapped.
 - **`packages/propel/src/icons/brand/plane-wordmark.tsx`** — third brand
   component, no in-app consumers found, left untouched.
 - **package.json `"name"` fields**, copyright headers ("Plane Software,

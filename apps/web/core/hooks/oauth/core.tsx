@@ -15,6 +15,7 @@ import GithubLightLogo from "@/app/assets/logos/github-black.png?url";
 import GithubDarkLogo from "@/app/assets/logos/github-dark.svg?url";
 import gitlabLogo from "@/app/assets/logos/gitlab-logo.svg?url";
 import googleLogo from "@/app/assets/logos/google-logo.svg?url";
+import setjooLogo from "@/app/assets/favicon/favicon-32x32.png?url";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 
@@ -30,12 +31,27 @@ export const useCoreOAuthConfig = (oauthActionText: string): TOAuthConfigs => {
   // derived values
   const isOAuthEnabled =
     (config &&
-      (config?.is_google_enabled ||
+      (config?.is_setjoo_enabled ||
+        config?.is_google_enabled ||
         config?.is_github_enabled ||
         config?.is_gitlab_enabled ||
         config?.is_gitea_enabled)) ||
     false;
   const oAuthOptions: TOAuthOption[] = [
+    {
+      id: "setjoo",
+      text: `${oauthActionText} with Setjoo`,
+      icon: (
+        <span className="flex rounded-xs bg-white p-0.5">
+          <img src={setjooLogo} height={16} width={16} alt="Setjoo Logo" />
+        </span>
+      ),
+      onClick: () => {
+        window.location.assign(`${API_BASE_URL}/auth/setjoo/${next_path ? `?next_path=${next_path}` : ``}`);
+      },
+      enabled: config?.is_setjoo_enabled,
+      className: "border-transparent bg-accent-primary text-on-color hover:bg-accent-primary-hover",
+    },
     {
       id: "google",
       text: `${oauthActionText} with Google`,

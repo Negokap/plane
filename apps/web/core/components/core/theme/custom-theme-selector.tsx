@@ -47,7 +47,7 @@ export const CustomThemeSelector = observer(function CustomThemeSelector() {
     // Fallback to defaults
     return {
       theme: "custom",
-      primary: "#3f76ff",
+      primary: "#ED1C24",
       background: "#1a1a1a",
       darkPalette: false,
     };

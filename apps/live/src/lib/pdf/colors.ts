@@ -148,18 +148,18 @@ export const NEUTRAL_COLORS = {
 
 // Brand colors (light theme accent)
 export const BRAND_COLORS = {
-  default: "#3f76ff", // oklch(0.4799 0.1158 242.91) - primary accent blue
-  100: "#f5f8ff",
-  200: "#e8f0ff",
-  300: "#d1e1ff",
-  400: "#b3d0ff",
-  500: "#8ab8ff",
-  600: "#5c9aff",
-  700: "#3f76ff",
-  900: "#2952b3",
-  1000: "#1e3d80",
-  1100: "#142b5c",
-  1200: "#0d1f40",
+  default: "#ed1c24", // Setjoo red
+  100: "#fdf4f4",
+  200: "#fde8e9",
+  300: "#f9c5c7",
+  400: "#f6a2a5",
+  500: "#f27478",
+  600: "#ef454b",
+  700: "#ed1c24",
+  900: "#a30f15",
+  1000: "#7a0b10",
+  1100: "#52070a",
+  1200: "#2e0406",
 } as const;
 
 // Semantic text colors
