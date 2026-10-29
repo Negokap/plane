@@ -7,6 +7,7 @@
 import {
   AnalyticsIcon,
   ArchiveIcon,
+  CommentFillIcon,
   CycleIcon,
   DraftIcon,
   HomeIcon,
@@ -22,6 +23,8 @@ export const getSidebarNavigationItemIcon = (key: string, className: string = ""
   switch (key) {
     case "home":
       return <HomeIcon className={cn("size-4 flex-shrink-0", className)} />;
+    case "chat":
+      return <CommentFillIcon className={cn("size-4 flex-shrink-0", className)} />;
     case "inbox":
       return <InboxIcon className={cn("size-4 flex-shrink-0", className)} />;
     case "projects":

@@ -7,6 +7,7 @@
     }
   },
   "sidebar": {
+    "chat": "Chat",
     "stickies": "Stickies",
     "your_work": "Your work",
     "projects": "Projects",
