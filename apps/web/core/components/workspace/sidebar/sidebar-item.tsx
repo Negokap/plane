@@ -49,7 +49,8 @@ export const SidebarItemBase = observer(function SidebarItemBase({
 
   const staticItems = [
     "home",
-    "pi_chat",
+    // "pi_chat" removed (Setjoo whitelabel) — no corresponding nav item
+    // is registered anymore, see user-menu.tsx
     "projects",
     "your_work",
     "stickies",

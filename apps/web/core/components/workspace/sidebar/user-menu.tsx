@@ -8,7 +8,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // plane imports
-import { DraftIcon, HomeIcon, PiChatLogo, YourWorkIcon, DashboardIcon } from "@plane/propel/icons";
+import { DraftIcon, HomeIcon, YourWorkIcon, DashboardIcon } from "@plane/propel/icons";
 import { EUserWorkspaceRoles } from "@plane/types";
 // hooks
 import { useUserPermissions, useUser } from "@/hooks/store/user";
@@ -51,13 +51,10 @@ export const SidebarUserMenu = observer(function SidebarUserMenu() {
       access: [EUserWorkspaceRoles.ADMIN, EUserWorkspaceRoles.MEMBER],
       Icon: DraftIcon,
     },
-    {
-      key: "pi-chat",
-      labelTranslationKey: "sidebar.pi_chat",
-      href: `/${workspaceSlug.toString()}/pi-chat/`,
-      access: [EUserWorkspaceRoles.ADMIN, EUserWorkspaceRoles.MEMBER, EUserWorkspaceRoles.GUEST],
-      Icon: PiChatLogo,
-    },
+    // Setjoo whitelabel: "pi-chat" (Plane AI chat) removed — it's Plane's
+    // paid/cloud-only AI assistant; no route exists for it anywhere in
+    // this open-source codebase, so the nav link was a dead end. See
+    // SETJOO_INTEGRATION.md.
   ];
 
   const draftIssueCount = workspaceUserInfo[workspaceSlug.toString()]?.draft_issue_count;
