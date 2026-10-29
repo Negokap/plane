@@ -4,30 +4,58 @@
 	}
 
   redir /spaces /spaces/ permanent
-	reverse_proxy /spaces/* space:3000
+	reverse_proxy /spaces/* space:3000 {
+		header_up X-Forwarded-Proto https
+	}
 
   redir /god-mode /god-mode/ permanent
-	reverse_proxy /god-mode/* admin:3000
-	
-	reverse_proxy /live/* live:3000
+	reverse_proxy /god-mode/* admin:3000 {
+		header_up X-Forwarded-Proto https
+	}
 
-	reverse_proxy /api/* api:8000
+	reverse_proxy /live/* live:3000 {
+		header_up X-Forwarded-Proto https
+	}
 
-	reverse_proxy /auth/* api:8000
+	reverse_proxy /api/* api:8000 {
+		header_up X-Forwarded-Proto https
+	}
 
-	reverse_proxy /static/* api:8000
+	reverse_proxy /auth/* api:8000 {
+		header_up X-Forwarded-Proto https
+	}
+
+	reverse_proxy /static/* api:8000 {
+		header_up X-Forwarded-Proto https
+	}
 
 	# Setjoo Identity OIDC callback — fixed by Setjoo's own IdP contract to
 	# "{origin}/oauth/callback" (no per-app override, no trailing slash),
 	# so it can't live under /auth/* like every other provider's callback.
 	# Without this, the path falls through to the web:3000 catch-all below
 	# and silently 200s with the SPA shell instead of reaching Django.
-	reverse_proxy /oauth/callback api:8000
+	#
+	# header_up X-Forwarded-Proto https on every route below: this proxy
+	# only ever receives plain HTTP from the nginx+certbot hop in front of
+	# it (TLS terminates at nginx, nginx force-redirects http->https at the
+	# edge before anything reaches here), but Caddy's reverse_proxy always
+	# sets its own X-Forwarded-Proto from its own connection scheme by
+	# default — overwriting nginx's original header rather than trusting
+	# it, even with trusted_proxies configured below (that setting affects
+	# Caddy's own client-IP/logging, not what it forwards downstream). Real
+	# bug this caused: Django's request.is_secure() came back False, so
+	# every generated OAuth redirect_uri was http:// instead of https://,
+	# which Setjoo Identity's exact-string redirect_uri match then rejects.
+	reverse_proxy /oauth/callback api:8000 {
+		header_up X-Forwarded-Proto https
+	}
 
 	reverse_proxy /{$BUCKET_NAME}/* plane-minio:9000
 	reverse_proxy /{$BUCKET_NAME} plane-minio:9000
 
-	reverse_proxy /* web:3000
+	reverse_proxy /* web:3000 {
+		header_up X-Forwarded-Proto https
+	}
 }
 
 {
