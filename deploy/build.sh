@@ -14,6 +14,16 @@ grep -hoE '^FROM [^ ]+' apps/web/Dockerfile.web apps/admin/Dockerfile.admin apps
     docker pull -q "public.ecr.aws/docker/library/$img" && docker tag "public.ecr.aws/docker/library/$img" "$img"
   done
 
+# Setjoo app launcher data, baked into the web bundle (the endpoint sends no CORS headers, so the browser can't fetch it).
+# On any failure the checked-in copy stays.
+apps_json=apps/web/core/components/navigation/setjoo-applications.json
+if curl -fsS --max-time 20 https://auth.setjoo.com/api/v1/applications -o /tmp/setjoo-applications.json \
+  && python3 -c 'import json,sys; a=json.load(open(sys.argv[1]))["applications"]; assert a and all(x["publicHost"] for x in a)' /tmp/setjoo-applications.json; then
+  cp /tmp/setjoo-applications.json "$apps_json" && echo "Launcher: fetched Setjoo applications"
+else
+  echo "WARNING: could not fetch Setjoo applications, using the checked-in copy"
+fi
+
 vite_args=()
 for v in API WEB ADMIN SPACE LIVE; do vite_args+=(--build-arg "VITE_${v}_BASE_URL=$PUBLIC_URL"); done
 

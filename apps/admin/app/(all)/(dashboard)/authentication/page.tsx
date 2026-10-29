@@ -33,7 +33,7 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
   // state
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // store hooks
-  const { fetchInstanceConfigurations, formattedConfig, updateInstanceConfigurations } = useInstance();
+  const { config, fetchInstanceConfigurations, formattedConfig, updateInstanceConfigurations } = useInstance();
   // derived values
   const enableSignUpConfig = formattedConfig?.ENABLE_SIGNUP ?? "";
 
@@ -50,7 +50,8 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
 
         // Only validate if this is an authentication method key
         if (isAuthMethodKey) {
-          const canDisable = canDisableAuthMethod(key, currentAuthModes, formattedConfig);
+          // Setjoo login (env IS_SETJOO_ENABLED) isn't listed here but still lets everyone sign in.
+          const canDisable = !!config?.is_setjoo_enabled || canDisableAuthMethod(key, currentAuthModes, formattedConfig);
 
           if (!canDisable) {
             setToast({
@@ -95,7 +96,7 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
           setIsSubmitting(false);
         });
     },
-    [formattedConfig, updateInstanceConfigurations]
+    [config?.is_setjoo_enabled, formattedConfig, updateInstanceConfigurations]
   );
 
   // Get authentication modes - this will use updateConfig which includes validation

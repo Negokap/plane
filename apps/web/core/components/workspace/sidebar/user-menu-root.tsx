@@ -7,7 +7,7 @@
 import { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/navigation";
-import { LogOut, Settings, Settings2 } from "lucide-react";
+import { LogOut, Settings, Settings2, UserCog } from "lucide-react";
 // plane imports
 import { GOD_MODE_URL } from "@plane/constants";
 import { useTranslation } from "@plane/i18n";
@@ -131,6 +131,13 @@ export const UserMenuRoot = observer(function UserMenuRoot() {
         >
           <Settings2 className="size-3.5 shrink-0" />
           {t("preferences")}
+        </CustomMenu.MenuItem>
+        <CustomMenu.MenuItem
+          onClick={() => window.open("https://auth.setjoo.com/", "_blank", "noopener,noreferrer")}
+          className="flex items-center gap-2"
+        >
+          <UserCog className="size-3.5 shrink-0" />
+          Manage Setjoo account
         </CustomMenu.MenuItem>
       </div>
       <CustomMenu.MenuItem onClick={handleSignOut} className="flex items-center gap-2">

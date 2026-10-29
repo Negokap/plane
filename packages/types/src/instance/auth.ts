@@ -76,6 +76,7 @@ export type TOAuthOption = {
   icon: React.ReactNode;
   onClick: () => void;
   enabled?: boolean;
+  className?: string;
 };
 
 export type TOAuthConfigs = {

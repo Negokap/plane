@@ -149,19 +149,19 @@
     /* -------------------- Light mode color tokens -------------------- */
     /* Neutral colors */
     --neutral-white: oklch(1 0 0);
-    --neutral-100: oklch(0.9848 0.0003 230.66);
-    --neutral-200: oklch(0.9696 0.0007 230.67);
-    --neutral-300: oklch(0.9543 0.001 230.67);
-    --neutral-400: oklch(0.9389 0.0014 230.68);
-    --neutral-500: oklch(0.9235 0.001733 230.6853);
-    --neutral-600: oklch(0.8925 0.0024 230.7);
-    --neutral-700: oklch(0.8612 0.0032 230.71);
-    --neutral-800: oklch(0.6668 0.0079 230.82);
-    --neutral-900: oklch(0.6161 0.009153 230.867);
-    --neutral-1000: oklch(0.5288 0.0083 230.88);
-    --neutral-1100: oklch(0.4377 0.0066 230.87);
-    --neutral-1200: oklch(0.2378 0.0029 230.83);
-    --neutral-black: oklch(0.1472 0.0034 230.83);
+    --neutral-100: oklch(0.9848 0.0020 17.2);
+    --neutral-200: oklch(0.9696 0.0020 17.2);
+    --neutral-300: oklch(0.9627 0.0021 17.2);
+    --neutral-400: oklch(0.9389 0.0020 17.2);
+    --neutral-500: oklch(0.9159 0.0044 17.24);
+    --neutral-600: oklch(0.8925 0.0024 17.2);
+    --neutral-700: oklch(0.8612 0.0032 17.2);
+    --neutral-800: oklch(0.6668 0.0079 17.2);
+    --neutral-900: oklch(0.6161 0.0092 17.2);
+    --neutral-1000: oklch(0.5126 0.0077 5.84);
+    --neutral-1100: oklch(0.4377 0.0066 17.2);
+    --neutral-1200: oklch(0.2442 0.0064 0.59);
+    --neutral-black: oklch(0.1472 0.0034 17.2);
     /* Brand colors */
     --brand-100: oklch(0.9847 0.0117 26.99);
     --brand-200: oklch(0.9715 0.0235 26.99);
@@ -174,7 +174,7 @@
     --brand-1000: oklch(0.3399 0.1104 26.99);
     --brand-1100: oklch(0.2626 0.0815 26.99);
     --brand-1200: oklch(0.2093 0.0617 26.99);
-    --brand-default: oklch(0.4799 0.1632 26.99);
+    --brand-default: oklch(0.603 0.2347 26.99);
     /* Green/Success colors */
     --green-100: oklch(0.9819 0.0181 155.83);
     --green-200: oklch(0.9624 0.0434 156.74);
@@ -399,19 +399,19 @@
     /* ---------- Dark mode color tokens ---------- */
     @variant dark {
       /* Neutral colors */
-      --neutral-black: oklch(0.1689 0.0021 230.81);
-      --neutral-100: oklch(0.1932 0.002 230.81);
-      --neutral-200: oklch(0.2158 0.0025 230.82);
-      --neutral-300: oklch(0.2378 0.0029 230.83);
-      --neutral-400: oklch(0.2593 0.0033 230.84);
-      --neutral-500: oklch(0.3011 0.0041 230.85);
-      --neutral-600: oklch(0.3415 0.0049 230.86);
-      --neutral-700: oklch(0.3999 0.0059 230.87);
-      --neutral-800: oklch(0.5989 0.0096 230.88);
-      --neutral-900: oklch(0.6835 0.0074 230.81);
-      --neutral-1000: oklch(0.7655 0.0054 230.76);
-      --neutral-1100: oklch(0.8455 0.0035 230.72);
-      --neutral-1200: oklch(0.9235 0.001733 230.6853);
+      --neutral-black: oklch(0.1689 0.0021 17.2);
+      --neutral-100: oklch(0.1932 0.0020 17.2);
+      --neutral-200: oklch(0.2158 0.0025 17.2);
+      --neutral-300: oklch(0.2378 0.0029 17.2);
+      --neutral-400: oklch(0.2593 0.0033 17.2);
+      --neutral-500: oklch(0.3011 0.0041 17.2);
+      --neutral-600: oklch(0.3415 0.0049 17.2);
+      --neutral-700: oklch(0.3999 0.0059 17.2);
+      --neutral-800: oklch(0.5989 0.0096 17.2);
+      --neutral-900: oklch(0.6835 0.0074 17.2);
+      --neutral-1000: oklch(0.7655 0.0054 17.2);
+      --neutral-1100: oklch(0.8455 0.0035 17.2);
+      --neutral-1200: oklch(0.9235 0.0020 17.2);
       --neutral-white: oklch(0.9702 0 0);
       /* Brand colors */
       --brand-100: oklch(0.2029 0.0423 26.99);
@@ -425,7 +425,7 @@
       --brand-1000: oklch(0.9409 0.0323 26.99);
       --brand-1100: oklch(0.9704 0.0161 26.99);
       --brand-1200: oklch(0.9856 0.0070 26.99);
-      --brand-default: oklch(0.6311 0.1780 26.99);
+      --brand-default: oklch(0.603 0.2347 26.99);
       /* Green colors */
       --green-100: oklch(0.2721 0.067322 152.52);
       --green-200: oklch(0.3935 0.0957 152.28);
@@ -980,10 +980,10 @@
   /* ---------- Font family ---------- */
   --font-*: initial;
   --font-heading:
-    "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Outfit Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
   --font-body:
-    "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Outfit Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
   --font-code:
     "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

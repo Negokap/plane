@@ -30,8 +30,8 @@ import { isStaleAssetError, recoverFromStaleAsset } from "@/lib/stale-asset-erro
 import { CustomErrorComponent } from "./error";
 import { AppProvider } from "./provider";
 // fonts
-import "@fontsource-variable/inter";
-import interVariableWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import "@plane/tailwind-config/fonts/outfit.css";
+import outfitWoff2 from "@plane/tailwind-config/fonts/outfit-latin-wght-normal.woff2?url";
 import "@fontsource/material-symbols-rounded";
 import "@fontsource/ibm-plex-mono";
 
@@ -49,7 +49,7 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: globalStyles },
   {
     rel: "preload",
-    href: interVariableWoff2,
+    href: outfitWoff2,
     as: "font",
     type: "font/woff2",
     crossOrigin: "anonymous",
@@ -78,7 +78,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <body suppressHydrationWarning>
         <div id="context-menu-portal" />
         <div id="editor-portal" />
-        <ThemeProvider themes={["light", "dark", "light-contrast", "dark-contrast", "custom"]} defaultTheme="system">
+        <ThemeProvider themes={["light", "dark", "light-contrast", "dark-contrast", "custom"]} defaultTheme="light">
           {children}
         </ThemeProvider>
         <Scripts />
