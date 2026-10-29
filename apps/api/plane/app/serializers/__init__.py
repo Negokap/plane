@@ -4,6 +4,7 @@
 
 from .base import BaseSerializer
 from .chat import ChatMessageSerializer
+from .custom_field import CustomFieldSerializer
 from .user import (
     UserSerializer,
     UserLiteSerializer,

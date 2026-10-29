@@ -83,6 +83,7 @@ from .workspace.cycle import WorkspaceCyclesEndpoint
 from .workspace.quick_link import QuickLinkViewSet
 from .workspace.sticky import WorkspaceStickyViewSet
 from .workspace.chat import WorkspaceChatMessageViewSet
+from .custom_field.base import CustomFieldViewSet, IssueCustomFieldValueEndpoint
 
 from .state.base import StateViewSet, IntakeStateEndpoint
 from .view.base import (

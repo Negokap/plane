@@ -91,3 +91,4 @@ from .sticky import Sticky
 from .chat import ChatMessage
 
 from .description import Description, DescriptionVersion
+from .custom_field import CustomField, CustomFieldType, IssueCustomFieldValue
