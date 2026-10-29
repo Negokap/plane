@@ -294,6 +294,14 @@ class ProjectViewSet(BaseViewSet):
                 ]
             )
 
+            # Setjoo: Intake is on by default, and its page needs the default Intake row.
+            if serializer.instance.intake_view:
+                Intake.objects.get_or_create(
+                    project=serializer.instance,
+                    is_default=True,
+                    defaults={"name": f"{serializer.instance.name[:240]} Intake"},
+                )
+
             project = self.get_queryset().filter(pk=serializer.data["id"]).first()
 
             # Create the model activity

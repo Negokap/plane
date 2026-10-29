@@ -8,6 +8,7 @@ import uuid
 from django.utils import timezone
 
 from plane.db.models import (
+    Intake,
     Project,
     ProjectMember,
     ProjectUserProperty,
@@ -95,6 +96,11 @@ class TestProjectAPIPost(TestProjectBase):
         expected_states = ["Backlog", "Todo", "In Progress", "Done", "Cancelled"]
         state_names = list(states.values_list("name", flat=True))
         assert set(state_names) == set(expected_states)
+
+        # Setjoo: every project feature is on by default, with Intake's default row
+        assert project.cycle_view and project.module_view and project.issue_views_view
+        assert project.page_view and project.intake_view
+        assert Intake.objects.filter(project=project, is_default=True).count() == 1
 
     @pytest.mark.django_db
     def test_create_project_with_project_lead(self, session_client, workspace, create_user):
