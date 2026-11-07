@@ -389,6 +389,14 @@ class Adapter:
             # Create profile
             Profile.objects.create(user=user)
 
+        # SSO users (e.g. Setjoo) skip Plane onboarding; also unblocks users stuck mid-onboarding
+        if self.user_data.get("user", {}).get("skip_onboarding"):
+            profile, _ = Profile.objects.get_or_create(user=user)
+            if not profile.is_onboarded:
+                profile.is_onboarded = True
+                profile.onboarding_step = {**profile.onboarding_step, "profile_complete": True}
+                profile.save(update_fields=["is_onboarded", "onboarding_step"])
+
         # Check if IDP sync is enabled and user is not signing up
         if self.check_sync_enabled() and not is_signup:
             user = self.sync_user_data(user=user)
