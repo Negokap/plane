@@ -127,14 +127,16 @@ class SetjooOAuthProvider(OauthAdapter):
         # Setjoo app (including Setjoo's own @setjoo.com mailbox) already
         # trusts directly — it is not a third-party IdP where a spoofed
         # claim is a meaningful risk.
+        first_name, _, last_name = (user_info_response.get("name") or "").strip().partition(" ")
         user_data = {
             "email": user_info_response.get("email"),
             "user": {
                 "avatar": user_info_response.get("picture"),
-                "first_name": user_info_response.get("name") or "",
-                "last_name": "",
+                "first_name": first_name,
+                "last_name": last_name.strip(),
                 "provider_id": user_info_response.get("sub"),
                 "is_password_autoset": True,
+                "skip_onboarding": True,
             },
         }
         super().set_user_data(user_data)
