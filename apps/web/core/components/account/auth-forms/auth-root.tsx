@@ -63,7 +63,7 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
     try {
       // loop guard: at most one automatic attempt per 30s if SSO bounces back without a session or error
       const last = Number(sessionStorage.getItem("setjoo_last_auto_sso") || 0);
-      skip = !!sessionStorage.getItem(SIGNED_OUT_KEY) || Date.now() - last < 30000;
+      skip = !!localStorage.getItem(SIGNED_OUT_KEY) || Date.now() - last < 30000;
       if (!skip && config?.is_setjoo_enabled) sessionStorage.setItem("setjoo_last_auto_sso", String(Date.now()));
     } catch {
       // storage unavailable: treat as not signed out

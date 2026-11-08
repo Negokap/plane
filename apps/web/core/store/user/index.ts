@@ -264,7 +264,7 @@ export class UserStore implements IUserStore {
    */
   signOut = async (): Promise<void> => {
     try {
-      sessionStorage.setItem(SIGNED_OUT_KEY, "1");
+      localStorage.setItem(SIGNED_OUT_KEY, "1");
     } catch {
       // storage unavailable
     }

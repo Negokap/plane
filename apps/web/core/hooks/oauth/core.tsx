@@ -50,7 +50,7 @@ export const useCoreOAuthConfig = (oauthActionText: string): TOAuthConfigs => {
       ),
       onClick: () => {
         try {
-          sessionStorage.removeItem(SIGNED_OUT_KEY);
+          localStorage.removeItem(SIGNED_OUT_KEY);
         } catch {
           // storage unavailable
         }

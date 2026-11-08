@@ -449,5 +449,5 @@ export const passwordErrors = [
   EAuthenticationErrorCodes.INVALID_NEW_PASSWORD,
 ];
 
-// set on explicit sign-out so the sign-in page does not auto-start Setjoo SSO
+// localStorage, set on explicit sign-out so no tab auto-starts Setjoo SSO until the user clicks the button
 export const SIGNED_OUT_KEY = "setjoo_signed_out";
