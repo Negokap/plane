@@ -448,3 +448,6 @@ export const passwordErrors = [
   EAuthenticationErrorCodes.PASSWORD_TOO_WEAK,
   EAuthenticationErrorCodes.INVALID_NEW_PASSWORD,
 ];
+
+// set on explicit sign-out so the sign-in page does not auto-start Setjoo SSO
+export const SIGNED_OUT_KEY = "setjoo_signed_out";

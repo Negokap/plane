@@ -16,6 +16,7 @@ import {
   EAuthSteps,
   EAuthenticationErrorCodes,
   EErrorAlertType,
+  SIGNED_OUT_KEY,
   authErrorHandler,
 } from "@/helpers/authentication.helper";
 // hooks
@@ -39,6 +40,7 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
   const invitation_id = searchParams.get("invitation_id");
   const workspaceSlug = searchParams.get("slug");
   const error_code = searchParams.get("error_code");
+  const isLocal = searchParams.get("local") === "1";
   // props
   const { authMode: currentAuthMode } = props;
   // states
@@ -53,6 +55,23 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
   const { isOAuthEnabled, oAuthOptions } = useOAuthConfig(oAuthActionText);
   const isEmailBasedAuthEnabled = config?.is_email_password_enabled || config?.is_magic_login_enabled;
   const noAuthMethodsAvailable = !isOAuthEnabled && !isEmailBasedAuthEnabled;
+
+  // Auto SSO: go straight to Setjoo unless an error, explicit sign-out, invite or ?local=1 says otherwise.
+  useEffect(() => {
+    if (currentAuthMode !== EAuthModes.SIGN_IN || error_code || invitation_id || isLocal) return;
+    let skip = false;
+    try {
+      // loop guard: at most one automatic attempt per 30s if SSO bounces back without a session or error
+      const last = Number(sessionStorage.getItem("setjoo_last_auto_sso") || 0);
+      skip = !!sessionStorage.getItem(SIGNED_OUT_KEY) || Date.now() - last < 30000;
+      if (!skip && config?.is_setjoo_enabled) sessionStorage.setItem("setjoo_last_auto_sso", String(Date.now()));
+    } catch {
+      // storage unavailable: treat as not signed out
+    }
+    if (skip) return;
+    oAuthOptions.find((option) => option.id === "setjoo" && option.enabled)?.onClick();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config?.is_setjoo_enabled]);
 
   useEffect(() => {
     if (!authMode && currentAuthMode) setAuthMode(currentAuthMode);

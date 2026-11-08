@@ -13,6 +13,8 @@ import type { IUser, TUserPermissions } from "@plane/types";
 import type { RootStore } from "@/store/root.store";
 import type { IUserPermissionStore } from "@/store/user/base-permissions.store";
 import { UserPermissionStore } from "@/store/user/base-permissions.store";
+// helpers
+import { SIGNED_OUT_KEY } from "@/helpers/authentication.helper";
 // services
 import { AuthService } from "@/services/auth.service";
 import { UserService } from "@/services/user.service";
@@ -261,6 +263,11 @@ export class UserStore implements IUserStore {
    * @returns {Promise<void>}
    */
   signOut = async (): Promise<void> => {
+    try {
+      sessionStorage.setItem(SIGNED_OUT_KEY, "1");
+    } catch {
+      // storage unavailable
+    }
     await this.authService.signOut(API_BASE_URL);
     this.store.resetOnSignOut();
   };
