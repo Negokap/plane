@@ -16,6 +16,8 @@ import GithubDarkLogo from "@/app/assets/logos/github-dark.svg?url";
 import gitlabLogo from "@/app/assets/logos/gitlab-logo.svg?url";
 import googleLogo from "@/app/assets/logos/google-logo.svg?url";
 import setjooLogo from "@/app/assets/favicon/favicon-32x32.png?url";
+// helpers
+import { SIGNED_OUT_KEY } from "@/helpers/authentication.helper";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 
@@ -47,6 +49,11 @@ export const useCoreOAuthConfig = (oauthActionText: string): TOAuthConfigs => {
         </span>
       ),
       onClick: () => {
+        try {
+          sessionStorage.removeItem(SIGNED_OUT_KEY);
+        } catch {
+          // storage unavailable
+        }
         window.location.assign(`${API_BASE_URL}/auth/setjoo/${next_path ? `?next_path=${next_path}` : ``}`);
       },
       enabled: config?.is_setjoo_enabled,
