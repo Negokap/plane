@@ -59,13 +59,16 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
   // Auto SSO: go straight to Setjoo unless an error, explicit sign-out, invite or ?local=1 says otherwise.
   useEffect(() => {
     if (currentAuthMode !== EAuthModes.SIGN_IN || error_code || invitation_id || isLocal) return;
-    let signedOut = false;
+    let skip = false;
     try {
-      signedOut = !!sessionStorage.getItem(SIGNED_OUT_KEY);
+      // loop guard: at most one automatic attempt per 30s if SSO bounces back without a session or error
+      const last = Number(sessionStorage.getItem("setjoo_last_auto_sso") || 0);
+      skip = !!sessionStorage.getItem(SIGNED_OUT_KEY) || Date.now() - last < 30000;
+      if (!skip && config?.is_setjoo_enabled) sessionStorage.setItem("setjoo_last_auto_sso", String(Date.now()));
     } catch {
       // storage unavailable: treat as not signed out
     }
-    if (signedOut) return;
+    if (skip) return;
     oAuthOptions.find((option) => option.id === "setjoo" && option.enabled)?.onClick();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config?.is_setjoo_enabled]);
